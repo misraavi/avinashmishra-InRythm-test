@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <title>Angular Interview</title>
+
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="styles.less" rel="stylesheet/less" type="text/css" />
+</head>
+<body ng-controller="namesController">
+    
+    <!-- YOUR CODE STARTS HERE -->
+        <input type="text" ng-model="newName"/><button ng-click="addName()">Add Name</button>
+        <div>
+            <name-tag ng-repeat="name in namesService.names()" name="{{name}}"></name-tag>
+        </div>
+    <!-- YOUE CODE ENDS HERE -->
+
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/angular/angular.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="node_modules/less/dist/less.min.js"></script>
+    <script src="node_modules/lodash/lodash.min.js"></script>    
+    <script src="app.js"></script>
+</body>
+</html>
