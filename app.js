@@ -1,23 +1,35 @@
 var app = angular.module('app', []);
+
+// --- YOUR CODE STARTS HERE ---
 app.controller("namesController", ["$scope","namesService", function ($scope, namesService) {
     $scope.newName ="";
-    $scope.namesService = namesService;
+    $scope.names = [];
     $scope.addName = function (){
-        namesService.addName($scope.newName);
-        $scope.newName = "";
+        if ($scope.newName != "")
+        {
+            namesService.addName($scope.newName);
+            $scope.newName = "";
+        }
     }
-    namesService.getNames();
+    $scope.deleteName = function(name){
+        namesService.deleteName(name);
+    }
+    namesService.getNames().then(function (data){
+        $scope.names = data;
+    });
 
 } ]);
-app.factory("namesService",["$http", function ($http){
+app.factory("namesService",["$http","$q", function ($http, $q){
     var names = [];
     var getNames = function (){
+        var defer = $q.defer();
         $http.get("data/names.json").then(function (response){
-            console.log(response.data);
             names = response.data;
+            defer.resolve(names);
         }, function () {
-            
+            defer.reject(response);
         });
+        return defer.promise;
     };
     var addName = function (name){
         names.push(name);
@@ -29,28 +41,17 @@ app.factory("namesService",["$http", function ($http){
     return {
         getNames: getNames,
         addName: addName,
-        deleteName:deleteName,
-        names: function () {
-            return names;
-        }
+        deleteName:deleteName
     }
 }])
 app.directive("nameTag",["namesService",function (namesService){
     return {
-        resttrict: "E",
-        template: "<div class=\"nameTag-container col-md-4\"><div class=\"row nameTag-header\">Hello my name is</div><div class=\"row nameTag-detail\"> {{name}} || <a href=\"#\" ng-click=deleteName()>delete</a></div></div>",
-        scope: {
-            name: "@"
-        },
-        link : function (scope, ele, attr)
-        {
-            scope.deleteName = function (){
-                namesService.deleteName(scope.name);
-            }
-        }
+        restrict: "E",
+        template: `<div class=\"nameTag-container col-sm-4 col-md-4\">
+                        <div class=\"row nameTag-header\">Hello my name is</div>
+                        <div class=\"row nameTag-detail\"> {{name}} || <a href=\"#\" ng-click=deleteName(name)>delete</a></div>
+                    </div>`
 
     }
 }]);
-// --- YOUR CODE STARTS HERE ---
-
 // --- YOUR CODE ENDS HERE ---

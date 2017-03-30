@@ -7,12 +7,14 @@
     <link href="node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="styles.less" rel="stylesheet/less" type="text/css" />
 </head>
-<body ng-controller="namesController">
+<body >
     
     <!-- YOUR CODE STARTS HERE -->
-        <input type="text" ng-model="newName"/><button ng-click="addName()">Add Name</button>
-        <div>
-            <name-tag ng-repeat="name in namesService.names()" name="{{name}}"></name-tag>
+        <div ng-controller="namesController">
+            <div class="row">
+                <input type="text" ng-model="newName"/><button ng-click="addName()">Add Name</button>
+            </div>
+            <name-tag ng-repeat="name in names" ></name-tag>
         </div>
     <!-- YOUE CODE ENDS HERE -->
 
